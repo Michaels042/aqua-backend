@@ -13,8 +13,8 @@ userRouter.put(
     const user = await User.findById(req.user._id);
     if (user) {
       user.email = user.email;
-      user.fullname = req.body.fullname || user.fullname;
-      user.phone = req.body.phone || user.phone;
+      user.fullName = req.body.fullName || user.fullName;
+      user.mobile = req.body.mobile || user.mobile;
 
       if (req.body.password) {
         user.password = bcrypt.hashSync(req.body.password, 8);
@@ -23,9 +23,9 @@ userRouter.put(
       const updatedUser = await user.save();
       res.status(201).send({
         _id: updatedUser._id,
-        fullname: updatedUser.fullname,
+        fullName: updatedUser.fullName,
         email: updatedUser.email,
-        phone: updatedUser.phone,
+        mobile: updatedUser.mobile,
         isAdmin: updatedUser.isAdmin,
       });
     } else {
