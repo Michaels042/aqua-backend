@@ -1,8 +1,7 @@
 const joi = require("joi");
 
 exports.userSchema = joi.object({
-  firstName: joi.string().min(3).max(50).required(),
-  lastName: joi.string().min(3).max(50),
+  fullName: joi.string().min(3).max(50).required(),
   password: joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")).required(),
   email: joi
     .string()
@@ -16,5 +15,5 @@ exports.userSchema = joi.object({
     )
     .required(),
   role: joi.string(),
-  phoneNumber: joi.string().required(),
+  mobile: joi.string().required(),
 });
