@@ -60,17 +60,15 @@ exports.handleUpdate = async (req, res) => {
 // );
 
 exports.userSignup = async (req, res) => {
-  let newUser;
-  try {
-    newUser = await userSchema.validateAsync(req.body);
-  } catch (error) {
-    return (
-      res
-        .status(500)
-        // .json({ status: false, message: error.details[0].message });
-        .json({ status: false, message: "wrong" })
-    );
-  }
+  let newUser = req.body;
+  // try {
+  //   newUser = await userSchema.validateAsync(req.body);
+  //   console.log(newUser);
+  // } catch (error) {
+  //   return res
+  //     .status(500)
+  //     .json({ status: false, message: error.details[0].message });
+  // }
   try {
     const userExist = await userModel.findOne({ email: newUser.email });
     if (userExist) {
