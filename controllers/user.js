@@ -64,9 +64,12 @@ exports.userSignup = async (req, res) => {
   try {
     newUser = await userSchema.validateAsync(req.body);
   } catch (error) {
-    return res
-      .status(500)
-      .json({ status: false, message: error.details[0].message });
+    return (
+      res
+        .status(500)
+        // .json({ status: false, message: error.details[0].message });
+        .json({ status: false, message: "wrong" })
+    );
   }
   try {
     const userExist = await userModel.findOne({ email: newUser.email });
