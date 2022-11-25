@@ -94,15 +94,15 @@ exports.userSignup = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  let details;
+  let details = req.body;
   let existingUser;
-  try {
-    details = await loginSchema.validateAsync(req.body);
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ status: false, message: error.details[0].message });
-  }
+  // try {
+  //   details = await loginSchema.validateAsync(req.body);
+  // } catch (error) {
+  //   return res
+  //     .status(500)
+  //     .json({ status: false, message: error.details[0].message });
+  // }
   // const { email, password } = req.body;
   // let existingUser;
 
