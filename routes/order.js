@@ -11,6 +11,6 @@ const { isAuth } = require("../middlewares/auth");
 //User login route
 orderRoutes.post("/order", isAuth, handleRequestOrder);
 
-orderRoutes.get("/order/history/:user_id", isAuth, handleGetOrderById);
+orderRoutes.get("/order/history", isAuth, handleGetOrderById);
 
 module.exports = orderRoutes;

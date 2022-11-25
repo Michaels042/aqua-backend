@@ -13,8 +13,9 @@ let requiredInputs = (inputs, required) => {
 
 exports.handleRequestOrder = async (req, res) => {
   let error;
-  let { email, address, mobile, quantity, amount, payment_type, user_id } =
-    req.body;
+  let user_id = req.user.id; // from auth middleware
+  let email = req.user.email; // from auth middleware
+  let { address, mobile, quantity, amount, payment_type } = req.body;
 
   // recieved inputs
   let inputs = {
@@ -28,15 +29,7 @@ exports.handleRequestOrder = async (req, res) => {
   };
 
   //required inputs
-  let required = [
-    "user_id",
-    "email",
-    "address",
-    "mobile",
-    "quantity",
-    "amount",
-    "payment_type",
-  ];
+  let required = ["address", "mobile", "quantity", "amount", "payment_type"];
 
   // Test to check if all required inputs are recieved
   error = requiredInputs(inputs, required);
@@ -71,9 +64,9 @@ exports.handleRequestOrder = async (req, res) => {
 };
 
 exports.handleGetOrderById = async (req, res) => {
-  let { user_id } = req.params;
+  let { id } = req.user;
   try {
-    let userOrders = await orderModel.find({ user_id });
+    let userOrders = await orderModel.find({ id });
     if (!userOrders || userOrders.length < 1) {
       return res
         .status(400)
