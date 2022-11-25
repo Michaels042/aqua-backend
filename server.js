@@ -1,5 +1,5 @@
 const app = require("./app");
-const dotenv = require("dotenv");
+require("dotenv").config();
 const connectDatabase = require("./config/database");
 
 // handling Uncaught Exception
@@ -8,9 +8,6 @@ process.on("uncaughtException", (err) => {
   console.log(`Shutting down the server due to Unhandled Exception`);
   process.exit(1);
 });
-
-// Config
-dotenv.config({ path: "config/config.env" });
 
 // Connecting to database
 connectDatabase();
