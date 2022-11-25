@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken");
 
-const { userSchema, loginSchema } = require("../utils/validatorSchema");
+const { userSchema } = require("../utils/validatorSchema");
 
 // Updating User Profile
 exports.handleUpdate = async (req, res) => {
@@ -60,19 +60,24 @@ exports.handleUpdate = async (req, res) => {
 // );
 
 exports.userSignup = async (req, res) => {
-  let newUser = req.body;
-  // try {
-  //   newUser = await userSchema.validateAsync(req.body);
-  //   console.log(newUser);
-  // } catch (error) {
-  //   return res
-  //     .status(500)
-  //     .json({ status: false, message: error.details[0].message });
-  // }
+  let newUser;
   try {
-    const userExist = await userModel.findOne({ email: newUser.email });
+    newUser = await userSchema.validateAsync(req.body);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ status: false, message: error.details[0].message });
+  }
+  try {
+    const userExist = await userModel.findOne({
+      $or: [{ email: newUser.email }, { mobile: newUser.mobile }],
+    });
     if (userExist) {
-      res.status(400).json({ status: false, message: "User already exists" });
+      res.status(400).json({
+        status: false,
+        message:
+          "User already exists, consider changing your email or phone number",
+      });
     } else {
       const hash = bcrypt.hashSync(newUser.password);
       newUser.password = hash;
@@ -94,27 +99,28 @@ exports.userSignup = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  let details = req.body;
+  let { email_mobile, password } = req.body;
+
+  if (!email_mobile || !password) {
+    return res.status(404).json({
+      status: false,
+      message: "Please input email/mobile or password",
+    });
+  }
+
   let existingUser;
-  // try {
-  //   details = await loginSchema.validateAsync(req.body);
-  // } catch (error) {
-  //   return res
-  //     .status(500)
-  //     .json({ status: false, message: error.details[0].message });
-  // }
-  // const { email, password } = req.body;
-  // let existingUser;
 
   try {
-    existingUser = await userModel.findOne({ email: details.email });
+    existingUser = await userModel.findOne({
+      $or: [{ email: email_mobile }, { mobile: email_mobile }],
+    });
     if (!existingUser) {
       return res
         .status(404)
         .json({ status: false, message: "User does not exist" });
     }
     const isPasswordCorrect = bcrypt.compareSync(
-      details.password,
+      password,
       existingUser.password
     );
     if (!isPasswordCorrect) {
@@ -141,7 +147,7 @@ exports.login = async (req, res) => {
       .json({ status: true, message: "User logged in successfully", token });
   } catch (err) {
     return res
-      .status(400)
+      .status(500)
       .json({ status: false, message: "Opps! something went wrong" });
   }
 };
