@@ -145,21 +145,4 @@ exports.login = async (req, res) => {
   }
 };
 
-// exports.updateUserRole = async (req, res, next) => {
-//   const newUserData = {
-//     name: req.body.fullName,
-//     email: req.body.email,
-//     role: req.body.role,
-//   };
-
-//   await User.findByIdAndUpdate(req.params.id, newUserData, {
-//     new: true,
-//     runValidators: true,
-//     useFindAndModify: false,
-//   });
-
-//   res.status(200).json({
-//     success: true,
-//   });
-// };
 
