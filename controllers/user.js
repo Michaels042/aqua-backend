@@ -31,6 +31,23 @@ exports.handleUpdate = async (req, res) => {
     res.status(404).send({ message: "User not found" });
   }
 };
+
+// Handle get User Profile
+exports.handleGetUser = async (req, res) => {
+  let userId = req.user.id;
+  try {
+    let user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ status: 404, message: "User not found" });
+    }
+    res.status(200).json({ status: 200, message: user });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ status: 500, message: "Opps! something went wrong" });
+  }
+};
+
 // userRouter.put(
 //   "/profile",
 //   isAuth,

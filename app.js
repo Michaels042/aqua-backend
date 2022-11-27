@@ -17,6 +17,8 @@ app.get("/", (req, res) => {
 app.use("/auth", userRouter);
 app.use("/user", orderRoutes); // ROUTES FOR USER TO ACCESSING ORDER COLLECTION
 
+app.use("/admin", orderRoutes); // ROUTES FOR ADMIN TO ACCESSING ORDER
+
 //Route Imports
 
 module.exports = app;

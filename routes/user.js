@@ -12,5 +12,6 @@ userRouter.put(
   isAuth,
   expressAsyncHandler(userController.handleUpdate)
 );
+userRouter.get("/profile", isAuth, userController.handleGetUser); // to get user profile
 
 module.exports = userRouter;
