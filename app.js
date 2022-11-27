@@ -1,14 +1,23 @@
 const express = require("express");
 const app = express();
-const userRouter = require("./routes/user")
+const cors = require("cors");
 
-const orderRoutes = require("./routes/order")
+const userRouter = require("./routes/user");
+
+const orderRoutes = require("./routes/order");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
-app.use("/auth", userRouter)
-app.use("/user", orderRoutes) // ROUTES FOR USER TO ACCESSING ORDER COLLECTION
+app.get("/", (req, res) => {
+  res.send({ status: true, message: "Welcome to aqua locator" });
+}); // backend landing route
+
+app.use("/auth", userRouter);
+app.use("/user", orderRoutes); // ROUTES FOR USER TO ACCESSING ORDER COLLECTION
+
+app.use("/admin", orderRoutes); // ROUTES FOR ADMIN TO ACCESSING ORDER
 
 //Route Imports
 

@@ -13,6 +13,7 @@ userRouter.put(
   isAuth,
   expressAsyncHandler(userController.handleUpdate)
 );
+userRouter.get("/profile", isAuth, userController.handleGetUser); // to get user profile
 
 userRouter.get("/users", isAuth, isAdmin, gerAllUsers);
 
